@@ -1,6 +1,6 @@
 # transformist
 
-Really simple transformations in the plane. A transform in two-dimensions is just a positional shift, a scale factor, and an angle of rotation. This module lets you specify and compose these transforms and apply them to sets of points.
+Really simple transformations in the plane. A transform in two dimensions is just a positional shift, a scale factor, and an angle of rotation. This module lets you specify and compose these transforms and apply them to sets of points.
 
 ## API
 

@@ -1,6 +1,6 @@
 # transformist
 
-really simple two-dimensional transformations. lets you specify and compose translations, scalings, and/or rotations, and apply them to sets of points.
+really simple transformations in the plane. we define a two-dimensional transform as a positional shift, a scale factor, and an angle of rotation. this module lets you specify and compose these transforms and apply them to sets of points.
 
 ## API
 

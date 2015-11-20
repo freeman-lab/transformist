@@ -29,11 +29,11 @@ Compose this transform with a transform `other`, modifies in place. Positions an
 
 Compute difference between this transform and a transform `other`. Returns an object 
 
-```
+```javascript
 {
 	position: [dx, dy]
-	scale: [ds]
-	angle: [da]
+	scale: ds
+	angle: da
 }
 ```
 
@@ -41,7 +41,7 @@ Compute difference between this transform and a transform `other`. Returns an ob
 
 Compute distance between this transform and a transform `other`. Returns an object
 
-```
+```javascript
 {
 	position: sqrt(dx^2 + dy^2)
 	scale: abs(ds)

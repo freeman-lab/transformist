@@ -19,7 +19,7 @@ Apply transformation to a list of `points` of the form `[[x, y], [x, y]...]`. Ap
 
 #### `t.invert(points)`
 
-Undoes a transformation on a list of `points` of the form `[[x, y], [x, y]...]`.  by applying the inverse transforms in order: translation, rotation, scale.
+Undo a transformation on a list of `points` of the form `[[x, y], [x, y]...]`.  by applying the inverse transforms in order: translation, rotation, scale.
 
 #### `t.compose(other)`
 

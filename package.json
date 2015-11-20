@@ -1,0 +1,37 @@
+{
+  "name": "transformist",
+  "version": "1.0.0",
+  "description": "simple transformations in the plane",
+  "main": "index.js",
+  "scripts": {
+    "tape": "tape tests/*.js | tap-spec",
+    "test": "npm run tape"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freeman-lab/transformist.git"
+  },
+  "keywords": [
+    "geometry",
+    "transform",
+    "2d",
+    "game",
+    "graphics",
+    "rotation",
+    "translation"
+  ],
+  "author": "Jeremy Freeman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/freeman-lab/transformist/issues"
+  },
+  "homepage": "https://github.com/freeman-lab/transformist#readme",
+  "devDependencies": {
+    "path": "^0.12.7",
+    "tap-spec": "^4.1.0",
+    "tape": "^4.2.2"
+  },
+  "dependencies": {
+    "lodash": "^3.10.1"
+  }
+}

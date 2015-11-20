@@ -8,10 +8,9 @@ Really simple transformations in the plane. A transform in two-dimensions is jus
 
 create a new transform
 
-**opts**
-- `position` two-dimensional array in the form `[x,y]`
-- `scale` scale factor
-- `angle` angle in degrees
+- `opts.position` two-dimensional array in the form `[x,y]`
+- `opts.scale` scale factor
+- `opts.angle` angle in degrees
 
 #### `t.apply(points)`
 

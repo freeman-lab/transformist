@@ -4,8 +4,8 @@
   "description": "simple transformations in the plane",
   "main": "index.js",
   "scripts": {
-    "tape": "tape tests/*.js | tap-spec",
-    "test": "npm run tape"
+    "tape": "tape test.js | tap-spec",
+    "test": "standard & npm run tape"
   },
   "repository": {
     "type": "git",

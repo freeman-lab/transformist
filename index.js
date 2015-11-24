@@ -2,7 +2,7 @@ var _ = require('lodash')
 
 module.exports = Transform
 
-function Transform(opts) {
+function Transform (opts) {
   if (!(this instanceof Transform)) {
     return new Transform(opts)
   }
@@ -14,16 +14,17 @@ function Transform(opts) {
   this.rotmat = rotmat(self.rotation)
 }
 
-Transform.prototype.compose = function(other) {
+Transform.prototype.compose = function (other) {
   var self = this
   self.translation = _.isArray(other.translation)
-    ? [self.translation[0] + other.translation[0], self.translation[1] + other.position[1]] : self.translation
+    ? [self.translation[0] + other.translation[0], self.translation[1] + other.translation[1]] : self.translation
   self.rotation = _.isNumber(other.rotation) ? self.rotation + other.rotation : self.rotation
   self.scale = _.isNumber(other.scale) ? self.scale * other.scale : self.scale
-  self.rotmat = self.rotmat(self.rotation)
+  self.rotmat = rotmat(self.rotation)
+  return self
 }
 
-Transform.prototype.difference = function(other) {
+Transform.prototype.difference = function (other) {
   var self = this
   var dx = _.isArray(other.translation) ? other.translation[0] - self.translation[0] : 0
   var dy = _.isArray(other.translation) ? other.translation[1] - self.translation[1] : 0
@@ -36,7 +37,7 @@ Transform.prototype.difference = function(other) {
   }
 }
 
-Transform.prototype.distance = function(other) {
+Transform.prototype.distance = function (other) {
   var d = this.difference(other)
   return {
     translation: Math.sqrt(Math.pow(d.translation[0], 2) + Math.pow(d.translation[1], 2)),
@@ -45,38 +46,50 @@ Transform.prototype.distance = function(other) {
   }
 }
 
-Transform.prototype.apply = function(points) {
+Transform.prototype.apply = function (points) {
+  if (!_.isArray(points)) throw Error('Points must be an array')
+  if (!_.isArray(points[0])) {
+    var cleanup = true
+    points = [points]
+  }
   var self = this
-  points = points.map( function(xy) {
+
+  points = points.map(function (xy) {
     return [xy[0] * self.scale, xy[1] * self.scale]
   })
-  points = points.map( function(xy) {
+  points = points.map(function (xy) {
     return [
       xy[0] * self.rotmat[0][0] + xy[1] * self.rotmat[0][1],
-      xy[0] * self.rotmat[1][0] + xy[1] * self.rotmat[1][1],
+      xy[0] * self.rotmat[1][0] + xy[1] * self.rotmat[1][1]
     ]
   })
-  points = points.map(function(xy) {
+  points = points.map(function (xy) {
     return [xy[0] + self.translation[0], xy[1] + self.translation[1]]
   })
-  return points
+  return cleanup ? points[0] : points
 }
 
-Transform.prototype.invert = function(points) {
+Transform.prototype.invert = function (points) {
+  if (!_.isArray(points)) throw Error('Points must be an array')
+  if (!_.isArray(points[0])) {
+    var cleanup = true
+    points = [points]
+  }
   var self = this
+
   points = points.map(function (xy) {
     return [xy[0] - self.translation[0], xy[1] - self.translation[1]]
   })
   points = points.map(function (xy) {
     return [
-      xy[0] * self.rotation[0][0] - xy[1] * self.rotation[0][1],
-      -xy[0] * self.rotation[1][0] + xy[1] * self.rotation[1][1]
+      xy[0] * self.rotmat[0][0] - xy[1] * self.rotmat[0][1],
+      -xy[0] * self.rotmat[1][0] + xy[1] * self.rotmat[1][1]
     ]
   })
   points = points.map(function (xy) {
     return [xy[0] / self.scale, xy[1] / self.scale]
   })
-  return points
+  return cleanup ? points[0] : points
 }
 
 function rotmat (angle) {

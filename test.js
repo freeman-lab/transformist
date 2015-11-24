@@ -121,6 +121,20 @@ test('invert: translation singleton', function (t) {
   t.end()
 })
 
+test('invert: roundtrip', function (t) {
+  var r = transform({translation: [1, 0], rotation: 90, scale: 2})
+  var a = [[0, 0], [0, 1], [1, 0]]
+  allclose(t)(a, r.invert(r.apply(a)))
+  t.end()
+})
+
+test('invert: roundtrip backwards', function (t) {
+  var r = transform({translation: [1, 0], rotation: 90, scale: 2})
+  var a = [[0, 0], [0, 1], [1, 0]]
+  allclose(t)(a, r.apply(r.invert(a)))
+  t.end()
+})
+
 test('difference: translation', function (t) {
   var r1 = transform({translation: [0, 0]})
   var r2 = transform({translation: [0, 1]})

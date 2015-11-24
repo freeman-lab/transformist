@@ -19,8 +19,8 @@ npm install transformist
 create a new transform
 
 - `opts.translation` two-dimensional array in the form `[x, y]`, default `[0, 0]`
-- `opts.scale` scale factor, default `1`
 - `opts.rotation` angle of rotation in degrees, default `0`
+- `opts.scale` scale factor, default `1`
 
 #### `t.apply(points)`
 
@@ -41,8 +41,8 @@ Compute difference between this transform and a transform `other`. Returns an ob
 ```javascript
 {
 	translation: [dx, dy]
-	scale: ds
 	rotation: dr
+	scale: ds
 }
 ```
 
@@ -53,7 +53,7 @@ Compute distance between this transform and a transform `other`. Returns an obje
 ```javascript
 {
 	translation: sqrt(dx^2 + dy^2)
-	scale: abs(ds)
 	rotation: abs(dr)
+	scale: abs(ds)
 }
 ```

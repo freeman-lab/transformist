@@ -12,6 +12,26 @@ use npm
 npm install transformist
 ```
 
+## examples
+
+```javascript
+var transform = require('transformist')
+```
+
+```javascript
+var t = transform({translation: [1, 2], scale: 2})
+
+t.apply([1, 1])
+> [3, 4]
+```
+
+```javascript
+var t = transform({rotation: 90, scale: 2})
+
+t.apply([[0, 0], [0, 1]])
+> [[0, 0], [-2, 0]]
+```
+
 ## usage
 
 #### `t = transform(opts)`

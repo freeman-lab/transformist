@@ -1,4 +1,3 @@
-var _ = require('lodash')
 var test = require('tape')
 var allclose = require('test-allclose')
 var transform = require('./index.js')
@@ -8,6 +7,37 @@ test('construction', function (t) {
   t.deepEqual(r.translation, [0, 0])
   t.equal(r.scale, 1)
   t.equal(r.rotation, 1)
+  t.end()
+})
+
+test('compose: translation', function (t) {
+  var r1 = transform({translation: [1, 0]})
+  var r2 = transform({translation: [1, 2]})
+  allclose(t)(r1.compose(r2).translation, [2, 2])
+  t.end()
+})
+
+test('compose: rotation', function (t) {
+  var r1 = transform({rotation: 20})
+  var r2 = transform({rotation: 30})
+  allclose(t)(r1.compose(r2).rotation, 50)
+  t.end()
+})
+
+test('compose: scale', function (t) {
+  var r1 = transform({scale: 2})
+  var r2 = transform({scale: 3})
+  allclose(t)(r1.compose(r2).scale, 6)
+  t.end()
+})
+
+test('compose: all', function (t) {
+  var r1 = transform({translation: [1, 0], rotation: 20, scale: 2})
+  var r2 = transform({translation: [1, 2], rotation: 30, scale: 3})
+  var r3 = r1.compose(r2)
+  allclose(t)(r3.translation, [2, 2])
+  allclose(t)(r3.rotation, 50)
+  allclose(t)(r3.scale, 6)
   t.end()
 })
 
@@ -32,5 +62,127 @@ test('apply: rotation', function (t) {
   var a = r.apply([[0, 0], [0, 1]])
   var b = [[0, 0], [-1, 0]]
   allclose(t)(a, b)
+  t.end()
+})
+
+test('apply: all', function (t) {
+  var r = transform({translation: [-1, 0], rotation: 90, scale: 2})
+  var a = r.apply([[0, 0], [0, 1]])
+  var b = [[-1, 0], [-3, 0]]
+  allclose(t)(a, b)
+  t.end()
+})
+
+test('apply: translation singleton', function (t) {
+  var r = transform({translation: [1, 2]})
+  var a = r.apply([0, 0])
+  var b = [1, 2]
+  allclose(t)(a, b)
+  t.end()
+})
+
+test('invert: translation', function (t) {
+  var r = transform({translation: [1, 2]})
+  var a = r.invert([[0, 0], [0, 1]])
+  var b = [[-1, -2], [-1, -1]]
+  allclose(t)(a, b)
+  t.end()
+})
+
+test('invert: scale', function (t) {
+  var r = transform({scale: 2})
+  var a = r.invert([[0, 0], [0, 2], [2, 0]])
+  var b = [[0, 0], [0, 1], [1, 0]]
+  allclose(t)(a, b)
+  t.end()
+})
+
+test('invert: rotation', function (t) {
+  var r = transform({rotation: 90})
+  var a = r.invert([[0, 0], [0, 1]])
+  var b = [[0, 0], [1, 0]]
+  allclose(t)(a, b)
+  t.end()
+})
+
+test('invert: all', function (t) {
+  var r = transform({translation: [1, 0], rotation: 90, scale: 2})
+  var a = r.invert([[0, 0], [0, 1]])
+  var b = [[0, 0.5], [0.5, 0.5]]
+  allclose(t)(a, b)
+  t.end()
+})
+
+test('invert: translation singleton', function (t) {
+  var r = transform({translation: [1, 2]})
+  var a = r.invert([0, 0])
+  var b = [-1, -2]
+  allclose(t)(a, b)
+  t.end()
+})
+
+test('difference: translation', function (t) {
+  var r1 = transform({translation: [0, 0]})
+  var r2 = transform({translation: [0, 1]})
+  var r3 = transform({translation: [-1, 0]})
+  allclose(t)(r1.difference(r2).translation, [0, 1])
+  allclose(t)(r1.difference(r3).translation, [-1, 0])
+  t.end()
+})
+
+test('difference: rotation', function (t) {
+  var r1 = transform({rotation: 0})
+  var r2 = transform({rotation: 10})
+  var r3 = transform({rotation: -10})
+  allclose(t)(r1.difference(r2).rotation, 10)
+  allclose(t)(r1.difference(r3).rotation, -10)
+  t.end()
+})
+
+test('difference: scale', function (t) {
+  var r1 = transform({scale: 1})
+  var r2 = transform({scale: 1.1})
+  var r3 = transform({scale: 0.9})
+  allclose(t)(r1.difference(r2).scale, 0.1)
+  allclose(t)(r1.difference(r3).scale, -0.1)
+  t.end()
+})
+
+test('distance: translation', function (t) {
+  var r1 = transform({translation: [0, 0]})
+  var r2 = transform({translation: [0, 1]})
+  var r3 = transform({translation: [-1, 0]})
+  allclose(t)(r1.distance(r2).translation, 1)
+  allclose(t)(r1.distance(r3).translation, 1)
+  t.end()
+})
+
+test('distance: rotation', function (t) {
+  var r1 = transform({rotation: 0})
+  var r2 = transform({rotation: 10})
+  var r3 = transform({rotation: -10})
+  allclose(t)(r1.distance(r2).rotation, 10)
+  allclose(t)(r1.distance(r3).rotation, 10)
+  t.end()
+})
+
+test('distance: scale', function (t) {
+  var r1 = transform({scale: 1})
+  var r2 = transform({scale: 1.1})
+  var r3 = transform({scale: 0.9})
+  allclose(t)(r1.distance(r2).scale, 0.1)
+  allclose(t)(r1.distance(r3).scale, 0.1)
+  t.end()
+})
+
+test('update', function (t) {
+  var r = transform({translation: [1, 2]})
+  var a = r.apply([0, 0])
+  var b = [1, 2]
+  allclose(t)(a, b)
+  r.translation = [1, 3]
+  var c = r.apply([0, 0])
+  var d = [1, 3]
+  allclose(t)(c, d)
   t.end()
 })

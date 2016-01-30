@@ -52,10 +52,9 @@ test('compose: matrices', function (t) {
   var m1 = r1.tomat()
   var m2 = r2.tomat()
   var r3 = r1.compose(r2)
-  var m3 = r3.tomat()
-  var m3test = mat3.create()
-  var m3test = mat3.multiply(m3, m2, m1)
-  allclose(t)(_.values(m3), _.values(m3test))
+  var m3a = r3.tomat()
+  var m3b = mat3.multiply(mat3.create(), m2, m1)
+  allclose(t)(_.values(m3a), _.values(m3b))
   t.end()
 })
 

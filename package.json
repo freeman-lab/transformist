@@ -1,6 +1,6 @@
 {
   "name": "transformist",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "simple transformations in the plane",
   "main": "index.js",
   "scripts": {

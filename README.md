@@ -1,6 +1,6 @@
 # transformist
 
-Simple transformations in the plane. A transform in two dimensions is defined here as a translation, a rotation, and a scaling. This module lets you specify this kind of transform and apply it, or its inverse, to one or more points. Methods are also provided for comparing and composing transforms. This is essentially wrapping [`mat3`](https://github.com/stackgl/gl-mat3) transforms with a friendlier API. Useful for 2D games and graphics.
+Simple transformations in the plane. A transform in two dimensions is defined here as a translation, a rotation, and a scaling. This module lets you specify this kind of transform and apply it, or its inverse, to one or more points. Methods are also provided for composing transforms and exporting as a matrix. This is essentially wrapping [`mat3`](https://github.com/stackgl/gl-mat3) transforms, but with an API that might seem friendlier. Useful for 2D games and graphics.
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 

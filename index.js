@@ -1,4 +1,5 @@
 var _ = require('lodash')
+var mat3 = require('gl-mat3')
 
 module.exports = Transform
 
@@ -16,8 +17,10 @@ function Transform (opts) {
 
 Transform.prototype.compose = function (other) {
   var self = this
+  self.translation = Transform({rotation: other.rotation, scale: other.scale}).apply(self.translation)
   self.translation = _.isArray(other.translation)
-    ? [self.translation[0] + other.translation[0], self.translation[1] + other.translation[1]] : self.translation
+    ? [self.translation[0] + other.translation[0], self.translation[1] + other.translation[1]] 
+    : self.translation
   self.rotation = _.isNumber(other.rotation) ? self.rotation + other.rotation : self.rotation
   self.scale = _.isNumber(other.scale) ? self.scale * other.scale : self.scale
   self.rotmat = rotmat(self.rotation)

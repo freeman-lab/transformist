@@ -1,3 +1,4 @@
+var _ = require('lodash')
 var mat3 = require('gl-mat3')
 var test = require('tape')
 var allclose = require('test-allclose')
@@ -13,32 +14,48 @@ test('construction', function (t) {
 
 test('compose: translation', function (t) {
   var r1 = transform({translation: [1, 0]})
-  var r2 = transform({translation: [1, 2]})
-  allclose(t)(r1.compose(r2).translation, [2, 2])
+  var r2 = transform({translation: [0, 1]})
+  var r3 = r1.compose(r2)
+  allclose(t)(r3.translation, [1, 1])
   t.end()
 })
 
 test('compose: rotation', function (t) {
-  var r1 = transform({rotation: 20})
-  var r2 = transform({rotation: 30})
-  allclose(t)(r1.compose(r2).rotation, 50)
+  var r1 = transform({rotation: 45})
+  var r2 = transform({rotation: 45})
+  var r3 = r1.compose(r2)
+  allclose(t)(r3.rotation, 90)
   t.end()
 })
 
 test('compose: scale', function (t) {
   var r1 = transform({scale: 2})
   var r2 = transform({scale: 3})
-  allclose(t)(r1.compose(r2).scale, 6)
+  var r3 = r1.compose(r2)
+  allclose(t)(r3.scale, 6)
   t.end()
 })
 
 test('compose: all', function (t) {
-  var r1 = transform({translation: [1, 0], rotation: 20, scale: 2})
-  var r2 = transform({translation: [1, 2], rotation: 30, scale: 3})
+  var r1 = transform({translation: [1, 0], rotation: 90})
+  var r2 = transform({translation: [0, 1], rotation: 90})
   var r3 = r1.compose(r2)
-  allclose(t)(r3.translation, [2, 2])
-  allclose(t)(r3.rotation, 50)
-  allclose(t)(r3.scale, 6)
+  allclose(t)(r3.translation, [0, 2])
+  allclose(t)(r3.rotation, 180)
+  allclose(t)(r3.apply([0, 1]), [0, 1])
+  t.end()
+})
+
+test('compose: matrices', function (t) {
+  var r1 = transform({translation: [1, 0], rotation: 90})
+  var r2 = transform({translation: [0, 1], rotation: 90})
+  var m1 = r1.tomat()
+  var m2 = r2.tomat()
+  var r3 = r1.compose(r2)
+  var m3 = r3.tomat()
+  var m3test = mat3.create()
+  var m3test = mat3.multiply(m3, m2, m1)
+  allclose(t)(_.values(m3), _.values(m3test))
   t.end()
 })
 

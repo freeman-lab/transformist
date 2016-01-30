@@ -24,28 +24,6 @@ Transform.prototype.compose = function (other) {
   return self
 }
 
-Transform.prototype.difference = function (other) {
-  var self = this
-  var dx = _.isArray(other.translation) ? other.translation[0] - self.translation[0] : 0
-  var dy = _.isArray(other.translation) ? other.translation[1] - self.translation[1] : 0
-  var dr = _.isNumber(other.rotation) ? other.rotation - self.rotation : 0
-  var ds = _.isNumber(other.scale) ? other.scale - self.scale : 0
-  return {
-    translation: [dx, dy],
-    rotation: dr,
-    scale: ds
-  }
-}
-
-Transform.prototype.distance = function (other) {
-  var d = this.difference(other)
-  return {
-    translation: Math.sqrt(Math.pow(d.translation[0], 2) + Math.pow(d.translation[1], 2)),
-    rotation: Math.abs(d.rotation),
-    scale: Math.abs(d.scale)
-  }
-}
-
 Transform.prototype.apply = function (points) {
   if (!_.isArray(points)) throw Error('Points must be an array')
   if (!_.isArray(points[0])) {

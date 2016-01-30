@@ -136,69 +136,6 @@ test('invert: roundtrip backwards', function (t) {
   t.end()
 })
 
-test('difference: translation', function (t) {
-  var r1 = transform({translation: [0, 0]})
-  var r2 = transform({translation: [0, 1]})
-  var r3 = transform({translation: [-1, 0]})
-  allclose(t)(r1.difference(r2).translation, [0, 1])
-  allclose(t)(r1.difference(r3).translation, [-1, 0])
-  t.end()
-})
-
-test('difference: rotation', function (t) {
-  var r1 = transform({rotation: 0})
-  var r2 = transform({rotation: 10})
-  var r3 = transform({rotation: -10})
-  allclose(t)(r1.difference(r2).rotation, 10)
-  allclose(t)(r1.difference(r3).rotation, -10)
-  t.end()
-})
-
-test('difference: scale', function (t) {
-  var r1 = transform({scale: 1})
-  var r2 = transform({scale: 1.1})
-  var r3 = transform({scale: 0.9})
-  allclose(t)(r1.difference(r2).scale, 0.1)
-  allclose(t)(r1.difference(r3).scale, -0.1)
-  t.end()
-})
-
-test('distance: translation', function (t) {
-  var r1 = transform({translation: [0, 0]})
-  var r2 = transform({translation: [0, 1]})
-  var r3 = transform({translation: [-1, 0]})
-  allclose(t)(r1.distance(r2).translation, 1)
-  allclose(t)(r1.distance(r3).translation, 1)
-test('mat: translation', function (t) {
-  var r = transform({translation: [1, 2]})
-  allclose(t)(_.values(r.tomat()), [1, 0, 0, 0, 1, 0, 1, 2, 1])
-  t.end()
-})
-
-test('distance: rotation', function (t) {
-  var r1 = transform({rotation: 0})
-  var r2 = transform({rotation: 10})
-  var r3 = transform({rotation: -10})
-  allclose(t)(r1.distance(r2).rotation, 10)
-  allclose(t)(r1.distance(r3).rotation, 10)
-test('mat: rotation', function (t) {
-  var r = transform({rotation: 180})
-  allclose(t)(_.values(r.tomat()), [-1, 0, 0, 0, -1, 0, 0, 0, 1])
-  t.end()
-})
-
-test('distance: scale', function (t) {
-  var r1 = transform({scale: 1})
-  var r2 = transform({scale: 1.1})
-  var r3 = transform({scale: 0.9})
-  allclose(t)(r1.distance(r2).scale, 0.1)
-  allclose(t)(r1.distance(r3).scale, 0.1)
-test('mat: scale', function (t) {
-  var r = transform({scale: 3})
-  allclose(t)(_.values(r.tomat()), [3, 0, 0, 0, 3, 0, 0, 0, 1])
-  t.end()
-})
-
 test('update', function (t) {
   var r = transform({translation: [1, 2]})
   var a = r.apply([0, 0])
@@ -208,6 +145,27 @@ test('update', function (t) {
   var c = r.apply([0, 0])
   var d = [1, 3]
   allclose(t)(c, d)
+  t.end()
+})
+
+test('mat: translation', function (t) {
+  var r = transform({translation: [1, 2]})
+  allclose(t)(_.values(r.tomat()), [1, 0, 0, 0, 1, 0, 1, 2, 1])
+  t.end()
+})
+
+test('mat: rotation', function (t) {
+  var r = transform({rotation: 180})
+  allclose(t)(_.values(r.tomat()), [-1, 0, 0, 0, -1, 0, 0, 0, 1])
+  t.end()
+})
+
+test('mat: scale', function (t) {
+  var r = transform({scale: 3})
+  allclose(t)(_.values(r.tomat()), [3, 0, 0, 0, 3, 0, 0, 0, 1])
+  t.end()
+})
+
 test('mat: combined', function (t) {
   var r = transform({translation: [1, 2], rotation: 180, scale: 3})
   allclose(t)(_.values(r.tomat()), [-3, 0, 0, 0, -3, 0, 1, 2, 1])

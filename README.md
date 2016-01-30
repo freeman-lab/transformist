@@ -54,28 +54,5 @@ Undo a transformation on one or more `points` of the form `[[x, y], [x, y]...]` 
 
 Compose this transform with a transform `other`, modifies in place. Translations and angles are added, scales are multiplied.
 
-#### `t.difference(other)`
-
-Compute difference between this transform and a transform `other`. Returns an object 
-
-```javascript
-{
-	translation: [dx, dy]
-	rotation: dr
-	scale: ds
-}
-```
-
-#### `t.distance(other)`
-
-Compute distance between this transform and a transform `other`. Returns an object
-
-```javascript
-{
-	translation: sqrt(dx^2 + dy^2)
-	rotation: abs(dr)
-	scale: abs(ds)
-}
-```
 #### `t.tomat()`
 Return a [`mat3`](https://github.com/stackgl/gl-mat3) representation of the transform.

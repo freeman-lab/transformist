@@ -1,6 +1,6 @@
 # transformist
 
-Simple transformations in the plane. A transform in two dimensions is defined here as a translation, a rotation, and a scaling. This module lets you specify this kind of transform and apply it, or its inverse, to one or more points. Methods are also provided for comparing and composing transforms. Useful for 2D games and graphics.
+Simple transformations in the plane. A transform in two dimensions is defined here as a translation, a rotation, and a scaling. This module lets you specify this kind of transform and apply it, or its inverse, to one or more points. Methods are also provided for composing transforms and exporting as a matrix. This is essentially wrapping [`mat3`](https://github.com/stackgl/gl-mat3) transforms, but with an API that might seem friendlier. Useful for 2D games and graphics.
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
@@ -52,28 +52,7 @@ Undo a transformation on one or more `points` of the form `[[x, y], [x, y]...]` 
 
 #### `t.compose(other)`
 
-Compose this transform with a transform `other`, modifies in place. Translations and angles are added, scales are multiplied.
+Compose this transform with a transform `other`, modifies in place. Equivalent to multiplying 3d transformation matrices.
 
-#### `t.difference(other)`
-
-Compute difference between this transform and a transform `other`. Returns an object 
-
-```javascript
-{
-	translation: [dx, dy]
-	rotation: dr
-	scale: ds
-}
-```
-
-#### `t.distance(other)`
-
-Compute distance between this transform and a transform `other`. Returns an object
-
-```javascript
-{
-	translation: sqrt(dx^2 + dy^2)
-	rotation: abs(dr)
-	scale: abs(ds)
-}
-```
+#### `t.tomat()`
+Return a [`mat3`](https://github.com/stackgl/gl-mat3) representation of the transform.

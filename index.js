@@ -1,4 +1,5 @@
 var _ = require('lodash')
+var mat3 = require('gl-mat3')
 
 module.exports = Transform
 
@@ -16,34 +17,14 @@ function Transform (opts) {
 
 Transform.prototype.compose = function (other) {
   var self = this
+  self.translation = Transform({rotation: other.rotation, scale: other.scale}).apply(self.translation)
   self.translation = _.isArray(other.translation)
-    ? [self.translation[0] + other.translation[0], self.translation[1] + other.translation[1]] : self.translation
+    ? [self.translation[0] + other.translation[0], self.translation[1] + other.translation[1]] 
+    : self.translation
   self.rotation = _.isNumber(other.rotation) ? self.rotation + other.rotation : self.rotation
   self.scale = _.isNumber(other.scale) ? self.scale * other.scale : self.scale
   self.rotmat = rotmat(self.rotation)
   return self
-}
-
-Transform.prototype.difference = function (other) {
-  var self = this
-  var dx = _.isArray(other.translation) ? other.translation[0] - self.translation[0] : 0
-  var dy = _.isArray(other.translation) ? other.translation[1] - self.translation[1] : 0
-  var dr = _.isNumber(other.rotation) ? other.rotation - self.rotation : 0
-  var ds = _.isNumber(other.scale) ? other.scale - self.scale : 0
-  return {
-    translation: [dx, dy],
-    rotation: dr,
-    scale: ds
-  }
-}
-
-Transform.prototype.distance = function (other) {
-  var d = this.difference(other)
-  return {
-    translation: Math.sqrt(Math.pow(d.translation[0], 2) + Math.pow(d.translation[1], 2)),
-    rotation: Math.abs(d.rotation),
-    scale: Math.abs(d.scale)
-  }
 }
 
 Transform.prototype.apply = function (points) {
@@ -90,6 +71,15 @@ Transform.prototype.invert = function (points) {
     return [xy[0] / self.scale, xy[1] / self.scale]
   })
   return cleanup ? points[0] : points
+}
+
+Transform.prototype.tomat = function () {
+  var self = this
+  var mat = mat3.create()
+  mat3.translate(mat, mat, self.translation)
+  mat3.rotate(mat, mat, self.rotation * Math.PI / 180)
+  mat3.scale(mat, mat, [self.scale, self.scale])
+  return mat
 }
 
 function rotmat (angle) {

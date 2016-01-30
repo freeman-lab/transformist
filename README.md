@@ -52,7 +52,7 @@ Undo a transformation on one or more `points` of the form `[[x, y], [x, y]...]` 
 
 #### `t.compose(other)`
 
-Compose this transform with a transform `other`, modifies in place. Equivalent to multiplying 3d transformation matrices.
+Compose this transform with a transform `other`, modifies in place. Equivalent to multiplying 3x3 transformation matrices.
 
 #### `t.tomat()`
 Return a [`mat3`](https://github.com/stackgl/gl-mat3) representation of the transform.

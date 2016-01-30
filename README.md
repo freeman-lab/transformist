@@ -77,3 +77,5 @@ Compute distance between this transform and a transform `other`. Returns an obje
 	scale: abs(ds)
 }
 ```
+#### `t.tomat()`
+Return a [`mat3`](https://github.com/stackgl/gl-mat3) representation of the transform.

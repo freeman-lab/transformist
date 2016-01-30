@@ -92,6 +92,15 @@ Transform.prototype.invert = function (points) {
   return cleanup ? points[0] : points
 }
 
+Transform.prototype.tomat = function () {
+  var self = this
+  var mat = mat3.create()
+  mat3.translate(mat, mat, self.translation)
+  mat3.rotate(mat, mat, self.rotation * Math.PI / 180)
+  mat3.scale(mat, mat, [self.scale, self.scale])
+  return mat
+}
+
 function rotmat (angle) {
   var rad = angle * Math.PI / 180
   return [[Math.cos(rad), -Math.sin(rad)], [Math.sin(rad), Math.cos(rad)]]

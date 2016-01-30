@@ -1,3 +1,4 @@
+var mat3 = require('gl-mat3')
 var test = require('tape')
 var allclose = require('test-allclose')
 var transform = require('./index.js')
@@ -168,6 +169,9 @@ test('distance: translation', function (t) {
   var r3 = transform({translation: [-1, 0]})
   allclose(t)(r1.distance(r2).translation, 1)
   allclose(t)(r1.distance(r3).translation, 1)
+test('mat: translation', function (t) {
+  var r = transform({translation: [1, 2]})
+  allclose(t)(_.values(r.tomat()), [1, 0, 0, 0, 1, 0, 1, 2, 1])
   t.end()
 })
 
@@ -177,6 +181,9 @@ test('distance: rotation', function (t) {
   var r3 = transform({rotation: -10})
   allclose(t)(r1.distance(r2).rotation, 10)
   allclose(t)(r1.distance(r3).rotation, 10)
+test('mat: rotation', function (t) {
+  var r = transform({rotation: 180})
+  allclose(t)(_.values(r.tomat()), [-1, 0, 0, 0, -1, 0, 0, 0, 1])
   t.end()
 })
 
@@ -186,6 +193,9 @@ test('distance: scale', function (t) {
   var r3 = transform({scale: 0.9})
   allclose(t)(r1.distance(r2).scale, 0.1)
   allclose(t)(r1.distance(r3).scale, 0.1)
+test('mat: scale', function (t) {
+  var r = transform({scale: 3})
+  allclose(t)(_.values(r.tomat()), [3, 0, 0, 0, 3, 0, 0, 0, 1])
   t.end()
 })
 
@@ -198,5 +208,8 @@ test('update', function (t) {
   var c = r.apply([0, 0])
   var d = [1, 3]
   allclose(t)(c, d)
+test('mat: combined', function (t) {
+  var r = transform({translation: [1, 2], rotation: 180, scale: 3})
+  allclose(t)(_.values(r.tomat()), [-3, 0, 0, 0, -3, 0, 1, 2, 1])
   t.end()
 })

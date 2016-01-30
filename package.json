@@ -33,6 +33,7 @@
     "test-fuzzy-array": "^1.0.1"
   },
   "dependencies": {
+    "gl-mat3": "^1.0.0",
     "lodash": "^3.10.1"
   }
 }
